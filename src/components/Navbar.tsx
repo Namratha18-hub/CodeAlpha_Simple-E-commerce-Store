@@ -1,18 +1,12 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { ShoppingBag, Search, User } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 
 export function Navbar() {
   const { count } = useCart();
   const navigate = useNavigate();
-  const { location } = useRouterState();
   const [query, setQuery] = useState("");
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.searchStr);
-    setQuery(params.get("q") ?? "");
-  }, [location.searchStr]);
 
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
