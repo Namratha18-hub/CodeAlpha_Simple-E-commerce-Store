@@ -36,8 +36,8 @@ function ProductPage() {
   const { add } = useCart();
   const { has, toggle } = useWishlist();
   const [qty, setQty] = useState(1);
-  const [activeImg, setActiveImg] = useState(product.image);
-  const [color, setColor] = useState(product.colors[0]);
+  const [activeImg, setActiveImg] = useState<string>(product.image);
+  const [color, setColor] = useState<string>(product.colors[0]);
   const off = discountPct(product);
 
   const related = products.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 4);
