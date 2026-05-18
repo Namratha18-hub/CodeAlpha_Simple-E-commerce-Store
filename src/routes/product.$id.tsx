@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { Star, Minus, Plus, ShoppingBag, Heart, Truck, RefreshCw, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
-import { discountPct, formatINR, products } from "@/data/products";
+import { discountPct, formatINR, products, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { ProductCard } from "@/components/ProductCard";
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/product/$id")({
 });
 
 function ProductPage() {
-  const { product } = Route.useLoaderData();
+  const { product } = Route.useLoaderData() as { product: Product };
   const { add } = useCart();
   const { has, toggle } = useWishlist();
   const [qty, setQty] = useState(1);
