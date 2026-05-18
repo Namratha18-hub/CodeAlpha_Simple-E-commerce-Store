@@ -1,115 +1,207 @@
-import headphones from "@/assets/product-headphones.jpg";
-import smartwatch from "@/assets/product-smartwatch.jpg";
-import sneakers from "@/assets/product-sneakers.jpg";
-import backpack from "@/assets/product-backpack.jpg";
-import sunglasses from "@/assets/product-sunglasses.jpg";
-import mug from "@/assets/product-mug.jpg";
-import keyboard from "@/assets/product-keyboard.jpg";
-import candle from "@/assets/product-candle.jpg";
+import banarasi from "@/assets/saree-banarasi.jpg";
+import kanjivaram from "@/assets/saree-kanjivaram.jpg";
+import chiffon from "@/assets/saree-chiffon.jpg";
+import cotton from "@/assets/saree-cotton.jpg";
+import bridal from "@/assets/saree-bridal.jpg";
+import organza from "@/assets/saree-organza.jpg";
+import georgette from "@/assets/saree-georgette.jpg";
 
 export type Product = {
   id: string;
   name: string;
-  price: number; // in INR
+  price: number; // INR (current)
+  mrp: number; // INR (original)
   image: string;
+  gallery: string[];
   category: string;
+  fabric: string;
+  occasion: string;
+  colors: string[];
   rating: number;
   reviews: number;
+  stock: number;
   description: string;
+  isNew?: boolean;
+  isBestseller?: boolean;
 };
 
-export const products: Product[] = [
-  {
-    id: "1",
-    name: "Wireless Noise-Cancel Headphones",
-    price: 8999,
-    image: headphones,
-    category: "Electronics",
-    rating: 4.7,
-    reviews: 1284,
-    description:
-      "Studio-grade sound with adaptive noise cancellation, 40-hour battery, and plush memory-foam ear cushions for all-day comfort.",
-  },
-  {
-    id: "2",
-    name: "Aurora Smartwatch Series 6",
-    price: 12499,
-    image: smartwatch,
-    category: "Electronics",
-    rating: 4.6,
-    reviews: 932,
-    description:
-      "Track fitness, sleep, and notifications on a vivid AMOLED display. Water resistant up to 50m with a 7-day battery.",
-  },
-  {
-    id: "3",
-    name: "Everyday Minimal Sneakers",
-    price: 3499,
-    image: sneakers,
-    category: "Fashion",
-    rating: 4.5,
-    reviews: 642,
-    description:
-      "Soft full-grain leather uppers with a cushioned EVA sole. Designed for city walks and weekend lounging.",
-  },
-  {
-    id: "4",
-    name: "Heritage Leather Backpack",
-    price: 5299,
-    image: backpack,
-    category: "Fashion",
-    rating: 4.8,
-    reviews: 412,
-    description:
-      "Hand-finished tan leather backpack with a padded laptop sleeve, two side pockets, and antique brass hardware.",
-  },
-  {
-    id: "5",
-    name: "Classic Optical Frames",
-    price: 1899,
-    image: sunglasses,
-    category: "Fashion",
-    rating: 4.3,
-    reviews: 218,
-    description:
-      "Lightweight metal frames with anti-glare lenses. Timeless silhouette that pairs with any look.",
-  },
-  {
-    id: "6",
-    name: "Artisan Ceramic Mug",
-    price: 549,
-    image: mug,
-    category: "Home",
-    rating: 4.9,
-    reviews: 1567,
-    description:
-      "Stoneware mug hand-thrown by Indian potters. 350ml capacity, microwave and dishwasher safe.",
-  },
-  {
-    id: "7",
-    name: "RGB Mechanical Keyboard",
-    price: 6799,
-    image: keyboard,
-    category: "Electronics",
-    rating: 4.6,
-    reviews: 824,
-    description:
-      "Hot-swappable switches, double-shot PBT keycaps, and per-key RGB. Built for typists and gamers alike.",
-  },
-  {
-    id: "8",
-    name: "Amber Glass Scented Candle",
-    price: 749,
-    image: candle,
-    category: "Home",
-    rating: 4.7,
-    reviews: 389,
-    description:
-      "Hand-poured soy wax candle with notes of sandalwood and vanilla. 45-hour burn time.",
-  },
+export const categories = [
+  "All",
+  "Banarasi",
+  "Kanjivaram",
+  "Silk",
+  "Cotton",
+  "Chiffon",
+  "Georgette",
+  "Organza",
+  "Bridal",
+  "Party Wear",
+  "Designer",
+  "Handloom",
+  "Linen",
+  "Floral Print",
+  "Embroidery",
+  "Festive",
+  "South Indian",
+  "Bengali",
+  "Gujarati",
+  "Bollywood",
+  "Traditional",
 ];
 
-export const categories = ["All", "Electronics", "Fashion", "Home"];
+export const fabrics = ["Silk", "Cotton", "Chiffon", "Georgette", "Organza", "Linen", "Net", "Crepe"];
+export const occasions = ["Wedding", "Party", "Festive", "Casual", "Office", "Bridal"];
+
+const palette = ["Maroon", "Gold", "Royal Blue", "Emerald", "Magenta", "Cream", "Black", "Mustard", "Peach", "Teal", "Ivory", "Rust"];
+
+const seedNames: Record<string, string[]> = {
+  Banarasi: ["Kashi Heirloom", "Varanasi Royale", "Brocade Bliss", "Zari Glow", "Mughal Muse"],
+  Kanjivaram: ["Temple Pride", "Kanchi Grandeur", "Mayil Motif", "Royal Pallu", "Devi Drape"],
+  Silk: ["Mulberry Whisper", "Tussar Luxe", "Patola Reverie", "Mysore Sheen", "Paithani Dream"],
+  Cotton: ["Khadi Breeze", "Jamdani Story", "Chanderi Daylight", "Tant Sunrise", "Handspun Calm"],
+  Chiffon: ["Floral Mist", "Sheer Romance", "Pastel Petal", "Cloud Drape", "Soft Whisper"],
+  Georgette: ["Midnight Sequin", "Starlit Soiree", "Crystal Cascade", "Velvet Hour", "Onyx Allure"],
+  Organza: ["Glass Garden", "Iridescent Bloom", "Crystal Vine", "Tulle Whisper", "Lustre Petal"],
+  Bridal: ["Sindoor Saga", "Lal Joda Legacy", "Phoolon Ki Doli", "Raat Ki Rani", "Saat Phere"],
+  "Party Wear": ["Disco Drape", "Cocktail Hour", "Glam Glitter", "Champagne Night", "Neon Nawab"],
+  Designer: ["Sabya Tribute", "Manish Muse", "Couture Cascade", "Studio Signature", "Avant Pallu"],
+  Handloom: ["Weaver's Pride", "Loom & Land", "Karigari Touch", "Threads of Time", "Village Vine"],
+  Linen: ["Breeze Linen", "Sunlit Weave", "Coastal Linen", "Daylight Drape", "Linen Lullaby"],
+  "Floral Print": ["Gulmohar Bloom", "Genda Phool", "Marigold Dance", "Lily Pond", "Rose Garden"],
+  Embroidery: ["Aari Atelier", "Zardozi Charm", "Resham Rhapsody", "Mirror & Thread", "Chikankari Cloud"],
+  Festive: ["Diwali Diya", "Holi Hues", "Onam Onset", "Pongal Pride", "Eid Elegance"],
+  "South Indian": ["Madurai Memory", "Coimbatore Classic", "Chettinad Charm", "Tirupati Tale", "Mysuru Mantle"],
+  Bengali: ["Tagore's Tant", "Durga Drape", "Shantiniketan Sun", "Kolkata Kantha", "Hooghly Hue"],
+  Gujarati: ["Bandhani Burst", "Patola Pride", "Garba Glow", "Kutch Kaleidoscope", "Rann Radiance"],
+  Bollywood: ["Filmi Flair", "Item Number", "Silver Screen", "Diva Drape", "Cine Couture"],
+  Traditional: ["Heritage Heirloom", "Vintage Vrindavan", "Classic Crown", "Timeless Tale", "Old World Opulence"],
+};
+
+const imageByCategory = (cat: string): { primary: string; gallery: string[] } => {
+  const map: Record<string, string> = {
+    Banarasi: banarasi,
+    Kanjivaram: kanjivaram,
+    Silk: kanjivaram,
+    Cotton: cotton,
+    Chiffon: chiffon,
+    Georgette: georgette,
+    Organza: organza,
+    Bridal: bridal,
+    "Party Wear": georgette,
+    Designer: organza,
+    Handloom: cotton,
+    Linen: cotton,
+    "Floral Print": organza,
+    Embroidery: bridal,
+    Festive: banarasi,
+    "South Indian": kanjivaram,
+    Bengali: cotton,
+    Gujarati: chiffon,
+    Bollywood: georgette,
+    Traditional: banarasi,
+  };
+  const primary = map[cat] ?? banarasi;
+  const all = [banarasi, kanjivaram, chiffon, cotton, bridal, organza, georgette];
+  const gallery = [primary, ...all.filter((g) => g !== primary).slice(0, 3)];
+  return { primary, gallery };
+};
+
+const fabricByCategory: Record<string, string> = {
+  Banarasi: "Silk",
+  Kanjivaram: "Silk",
+  Silk: "Silk",
+  Cotton: "Cotton",
+  Chiffon: "Chiffon",
+  Georgette: "Georgette",
+  Organza: "Organza",
+  Bridal: "Silk",
+  "Party Wear": "Georgette",
+  Designer: "Crepe",
+  Handloom: "Cotton",
+  Linen: "Linen",
+  "Floral Print": "Organza",
+  Embroidery: "Silk",
+  Festive: "Silk",
+  "South Indian": "Silk",
+  Bengali: "Cotton",
+  Gujarati: "Cotton",
+  Bollywood: "Net",
+  Traditional: "Silk",
+};
+
+const occasionByCategory: Record<string, string> = {
+  Banarasi: "Wedding",
+  Kanjivaram: "Wedding",
+  Silk: "Festive",
+  Cotton: "Casual",
+  Chiffon: "Party",
+  Georgette: "Party",
+  Organza: "Festive",
+  Bridal: "Bridal",
+  "Party Wear": "Party",
+  Designer: "Party",
+  Handloom: "Office",
+  Linen: "Casual",
+  "Floral Print": "Casual",
+  Embroidery: "Wedding",
+  Festive: "Festive",
+  "South Indian": "Festive",
+  Bengali: "Festive",
+  Gujarati: "Festive",
+  Bollywood: "Party",
+  Traditional: "Festive",
+};
+
+// Deterministic pseudo-random for stable rendering
+const rand = (seed: number) => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
+
+const generateProducts = (): Product[] => {
+  const list: Product[] = [];
+  let id = 1;
+  for (const cat of categories.slice(1)) {
+    const names = seedNames[cat] ?? [cat];
+    const { primary, gallery } = imageByCategory(cat);
+    for (let i = 0; i < 6; i++) {
+      const r = rand(id * 13.37);
+      const basePrice = Math.round((1499 + r * 28500) / 100) * 100 + 99;
+      const discount = Math.floor(15 + rand(id * 7.1) * 45); // 15-60%
+      const mrp = Math.round((basePrice / (1 - discount / 100)) / 100) * 100;
+      const rating = +(3.8 + rand(id * 2.7) * 1.2).toFixed(1);
+      const reviews = Math.floor(40 + rand(id * 5.5) * 2400);
+      const stock = Math.floor(2 + rand(id * 9.9) * 80);
+      const colorCount = 2 + Math.floor(rand(id * 3.3) * 3);
+      const colors = Array.from({ length: colorCount }, (_, k) => palette[(id + k) % palette.length]);
+      const name = `${names[i % names.length]} ${cat} Saree`;
+      list.push({
+        id: String(id),
+        name,
+        price: basePrice,
+        mrp,
+        image: primary,
+        gallery,
+        category: cat,
+        fabric: fabricByCategory[cat] ?? "Silk",
+        occasion: occasionByCategory[cat] ?? "Festive",
+        colors,
+        rating,
+        reviews,
+        stock,
+        description: `A breathtaking ${cat.toLowerCase()} saree crafted with meticulous detailing. ${
+          fabricByCategory[cat]
+        } fabric with traditional motifs, perfect for ${occasionByCategory[cat]?.toLowerCase()} occasions. Comes with an unstitched blouse piece.`,
+        isNew: id % 9 === 0,
+        isBestseller: id % 7 === 0,
+      });
+      id++;
+    }
+  }
+  return list;
+};
+
+export const products: Product[] = generateProducts();
 
 export const formatINR = (value: number) =>
   new Intl.NumberFormat("en-IN", {
@@ -117,3 +209,5 @@ export const formatINR = (value: number) =>
     currency: "INR",
     maximumFractionDigits: 0,
   }).format(value);
+
+export const discountPct = (p: Product) => Math.round(((p.mrp - p.price) / p.mrp) * 100);
