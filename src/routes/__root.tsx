@@ -10,6 +10,8 @@ import {
 
 import appCss from "../styles.css?url";
 import { CartProvider } from "@/context/CartContext";
+import { WishlistProvider } from "@/context/WishlistContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -52,13 +54,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lumen — Modern Essentials Store" },
-      { name: "description", content: "Shop curated electronics, fashion and home essentials. Prices in INR with free shipping over ₹999." },
+      { title: "VastraVibe — Premium Indian Sarees Online" },
+      { name: "description", content: "Shop India's finest Banarasi, Kanjivaram, Bridal & Designer sarees. Curated handloom collection with free shipping over ₹1499." },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" },
       { rel: "stylesheet", href: appCss },
     ],
   }),
@@ -81,14 +83,18 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <div className="flex min-h-screen flex-col">
-          <Navbar />
-          <main className="flex-1"><Outlet /></main>
-          <Footer />
-        </div>
-        <Toaster position="top-right" richColors />
-      </CartProvider>
+      <ThemeProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <div className="flex min-h-screen flex-col">
+              <Navbar />
+              <main className="flex-1"><Outlet /></main>
+              <Footer />
+            </div>
+            <Toaster position="top-right" richColors />
+          </CartProvider>
+        </WishlistProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
