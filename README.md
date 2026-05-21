@@ -39,4 +39,4 @@ Authentication:
 ### Clone Repository
 
 ```bash
-git clone <repo-link>
+git clone <https://github.com/Namratha18-hub/CodeAlpha_Simple-E-commerce-Store/tree/main>
